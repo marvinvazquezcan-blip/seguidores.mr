@@ -133,11 +133,44 @@ button:hover{
     <div class="price-box">
         Total: $<span id="total">0.00</span>
     </div>
+<div class="cashapp">
+    <button onclick="pagarCashApp()" id="botonPago">
+        Pagar por Cash App
+        function pagarCashApp(){
+    let total = document.getElementById("total").innerText;
 
-    <div class="cashapp">
-    <a href="https://cash.app/$seguidoresmr" target="_blank">
-        <button type="button">Pagar por Cash App</button>
-    </a>
+    if(total == "0.00"){
+        alert("Primero ingresa la cantidad de seguidores.");
+        return;
+    }
+
+    let linkPago = "https://cash.app/$seguidoresmr/" + total + "?note=Marketing";
+
+    window.open(linkPago, "_blank");
+}
+    </button>
+</div>
+
+function enviarWhatsApp(){
+    let plataforma = document.getElementById("plataforma").value;
+    let link = document.getElementById("link").value;
+    let seguidores = document.getElementById("seguidores").value;
+    let total = document.getElementById("total").innerText;
+
+    if(plataforma === "" || link === "" || seguidores === ""){
+        alert("Por favor completa todos los campos.");
+        return;
+    }
+
+    let mensaje = "Nuevo Cliente MR Growth 🚀%0A" +
+                  "Plataforma: " + plataforma + "%0A" +
+                  "Cuenta: " + link + "%0A" +
+                  "Seguidores: " + seguidores + "%0A" +
+                  "Total Pagado: $" + total;
+
+    window.open("https://wa.me/14323419865?text=" + mensaje, "_blank");
+}
+   
 </div>
 
 <button style="margin-top:10px;" onclick="enviarWhatsApp()">

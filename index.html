@@ -1,20 +1,19 @@
 <!DOCTYPE html>
-<html lang="es">
+<html lang="en">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>MR Growth - Crecimiento Real</title>
+<title>MR Growth - Real Growth</title>
 <style>
 body{
     margin:0;
-    font-family: 'Segoe UI', sans-serif;
+    font-family:'Segoe UI',sans-serif;
     background:linear-gradient(135deg,#b91c1c,#7f1d1d);
     display:flex;
     justify-content:center;
     align-items:center;
     min-height:100vh;
 }
-
 .container{
     background:white;
     width:90%;
@@ -23,26 +22,22 @@ body{
     border-radius:15px;
     box-shadow:0 15px 40px rgba(0,0,0,0.3);
 }
-
 h1{
     text-align:center;
     color:#b91c1c;
     margin-bottom:5px;
 }
-
 .subtitle{
     text-align:center;
     font-size:14px;
     color:#555;
     margin-bottom:20px;
 }
-
 label{
     font-size:14px;
     font-weight:bold;
     color:#333;
 }
-
 select,input{
     width:100%;
     padding:12px;
@@ -51,12 +46,10 @@ select,input{
     border:1px solid #ddd;
     font-size:14px;
 }
-
 input:focus, select:focus{
     outline:none;
     border:1px solid #b91c1c;
 }
-
 .price-box{
     background:#fee2e2;
     padding:12px;
@@ -66,7 +59,6 @@ input:focus, select:focus{
     color:#b91c1c;
     margin-bottom:15px;
 }
-
 button{
     width:100%;
     padding:14px;
@@ -79,16 +71,13 @@ button{
     font-size:15px;
     transition:0.3s;
 }
-
 button:hover{
     background:#991b1b;
 }
-
 button:disabled{
     background:#ccc;
     cursor:not-allowed;
 }
-
 .progress-container{
     background:#eee;
     border-radius:20px;
@@ -96,14 +85,12 @@ button:disabled{
     margin-top:20px;
     overflow:hidden;
 }
-
 .progress-bar{
     height:100%;
     width:0%;
     background:#b91c1c;
     transition:0.4s;
 }
-
 .cashapp{
     text-align:center;
     margin-bottom:15px;
@@ -114,102 +101,104 @@ button:disabled{
 
 <div class="container">
     <h1>MR Growth</h1>
-    <div class="subtitle">Crecimiento real con asesoría personalizada</div>
+    <div class="subtitle">Real growth with personalized guidance</div>
 
-    <label>Plataforma</label>
-    <select id="plataforma" onchange="actualizarProgreso(); checkForm()">
-        <option value="">Selecciona plataforma</option>
+    <label>Platform</label>
+    <select id="platform" onchange="updateProgress(); checkForm()">
+        <option value="">Select Platform</option>
         <option>Instagram</option>
         <option>TikTok</option>
         <option>Facebook</option>
     </select>
 
-    <label>Link de tu cuenta</label>
-    <input type="text" id="link" placeholder="https://" oninput="actualizarProgreso(); checkForm()">
+    <label>Your Account Link</label>
+    <input type="text" id="accountLink" placeholder="https://" oninput="updateProgress(); checkForm()">
 
-    <label>Cantidad de seguidores</label>
-    <input type="number" id="seguidores" placeholder="Ej: 1000" oninput="calcularPrecio(); actualizarProgreso(); checkForm()">
+    <label>Followers Quantity</label>
+    <input type="number" id="followers" placeholder="e.g. 1000" oninput="calculatePrice(); updateProgress(); checkForm()">
 
     <div class="price-box">
         Total: $<span id="total">0.00</span>
     </div>
 
-    <!-- Botón de Cash App -->
+    <!-- Cash App Payment Button -->
     <div class="cashapp">
-        <button id="botonCash" onclick="pagarCashApp()">
-            Pagar por Cash App
-        </button>
+        <button id="cashButton" onclick="payCashApp()">Pay with Cash App</button>
     </div>
 
-    <!-- Botón de Confirmar Pago -->
-    <button id="botonWhats" onclick="enviarWhatsApp()" disabled>
-        Confirmar Pago
+    <!-- Confirm Payment Button -->
+    <button id="confirmButton" onclick="confirmPayment()" disabled>
+        Confirm Payment
     </button>
 
     <div class="progress-container">
-        <div class="progress-bar" id="barra"></div>
+        <div class="progress-bar" id="progressBar"></div>
     </div>
 </div>
 
 <script>
-/* Calcula precio */
-function calcularPrecio(){
-    let seguidores = document.getElementById("seguidores").value;
-    let precio = (seguidores / 1000) * 9;
-    document.getElementById("total").innerText = seguidores ? precio.toFixed(2) : "0.00";
+/* Calculate price based on followers */
+function calculatePrice(){
+    let followers = document.getElementById("followers").value;
+    let price = (followers / 1000) * 9;
+    document.getElementById("total").innerText = followers ? price.toFixed(2) : "0.00";
 }
 
-/* Actualiza barra de progreso */
-function actualizarProgreso(){
-    let progreso = 0;
-    if(document.getElementById("plataforma").value !== "") progreso += 25;
-    if(document.getElementById("link").value !== "") progreso += 25;
-    if(document.getElementById("seguidores").value !== "") progreso += 50;
-    document.getElementById("barra").style.width = progreso + "%";
+/* Update progress bar */
+function updateProgress(){
+    let progress = 0;
+    if(document.getElementById("platform").value !== "") progress += 25;
+    if(document.getElementById("accountLink").value !== "") progress += 25;
+    if(document.getElementById("followers").value !== "") progress += 50;
+    document.getElementById("progressBar").style.width = progress + "%";
 }
 
-/* Habilita botón Confirmar solo si todo está completo */
+/* Enable confirm button only if all fields are filled */
 function checkForm(){
-    let plataforma = document.getElementById("plataforma").value;
-    let link = document.getElementById("link").value;
-    let seguidores = document.getElementById("seguidores").value;
-    document.getElementById("botonWhats").disabled = (plataforma === "" || link === "" || seguidores === "");
+    let platform = document.getElementById("platform").value;
+    let accountLink = document.getElementById("accountLink").value;
+    let followers = document.getElementById("followers").value;
+    document.getElementById("confirmButton").disabled = (platform === "" || accountLink === "" || followers === "");
 }
 
-/* Abrir Cash App con monto y nota */
-function pagarCashApp(){
+/* Open Cash App with amount and note */
+function payCashApp(){
     let total = document.getElementById("total").innerText;
     if(total == "0.00"){
-        alert("Primero ingresa la cantidad de seguidores.");
+        alert("Please enter the followers quantity first.");
         return;
     }
-
-    // Abrir Cash App en nueva ventana
-    let linkPago = "https://cash.app/$seguidoresmr/" + total + "?note=Marketing";
-    window.open(linkPago, "_blank");
+    let cashLink = "https://cash.app/$seguidoresmr/" + total + "?note=Marketing";
+    window.open(cashLink, "_blank");
 }
 
-/* Enviar WhatsApp */
-function enviarWhatsApp(){
-    let plataforma = document.getElementById("plataforma").value;
-    let link = document.getElementById("link").value;
-    let seguidores = document.getElementById("seguidores").value;
+/* Confirm Payment: Send all info to WhatsApp */
+function confirmPayment(){
+    let platform = document.getElementById("platform").value;
+    let accountLink = document.getElementById("accountLink").value;
+    let followers = document.getElementById("followers").value;
     let total = document.getElementById("total").innerText;
 
-    if(plataforma === "" || link === "" || seguidores === ""){
-        alert("Por favor completa todos los campos.");
+    if(platform === "" || accountLink === "" || followers === ""){
+        alert("Please complete all fields before confirming payment.");
         return;
     }
 
-    let mensaje = "Nuevo Cliente MR Growth 🚀%0A" +
-                  "Plataforma: " + plataforma + "%0A" +
-                  "Cuenta: " + link + "%0A" +
-                  "Seguidores: " + seguidores + "%0A" +
-                  "Total Pagado: $" + total;
+    let message = "📌 New MR Growth Client 🚀%0A" +
+                  "--------------------------------%0A" +
+                  "Platform: " + platform + "%0A" +
+                  "Account Link: " + accountLink + "%0A" +
+                  "Followers: " + followers + "%0A" +
+                  "Total Paid: $" + total + "%0A" +
+                  "--------------------------------";
 
-    // Abrir WhatsApp sin recargar página
-    window.open("https://wa.me/14323419865?text=" + mensaje, "_blank");
+    window.open("https://wa.me/14323419865?text=" + message, "_blank");
 }
+
+/* Make confirm button active when all fields filled */
+document.getElementById("platform").addEventListener("change", checkForm);
+document.getElementById("accountLink").addEventListener("input", checkForm);
+document.getElementById("followers").addEventListener("input", checkForm);
 </script>
 
 </body>

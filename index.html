@@ -189,21 +189,26 @@ function pagarCashApp(){
     window.open(linkPago, "_blank");
 }
 
-/* Enviar WhatsApp con toda la info */
-function sendWhatsApp(){
-    // Obtener todos los valores del formulario
+<!-- Confirm Payment Button -->
+<button id="confirmButton" onclick="confirmPayment()" disabled>
+    Confirm Payment
+</button>
+
+<script>
+function confirmPayment() {
+    // Obtener valores del formulario
     let platform = document.getElementById("platform").value;
     let accountLink = document.getElementById("accountLink").value;
     let followers = document.getElementById("followers").value;
     let total = document.getElementById("total").innerText;
 
-    // Verificar que todos los campos estén completos
+    // Validar campos
     if(platform === "" || accountLink === "" || followers === ""){
-        alert("Please complete all fields.");
+        alert("Please complete all fields before confirming payment.");
         return;
     }
 
-    // Crear el mensaje para WhatsApp
+    // Crear mensaje formateado para WhatsApp
     let message = "📌 New MR Growth Client 🚀%0A" +
                   "--------------------------------%0A" +
                   "Platform: " + platform + "%0A" +
@@ -212,8 +217,23 @@ function sendWhatsApp(){
                   "Total Paid: $" + total + "%0A" +
                   "--------------------------------";
 
-    // Abrir WhatsApp con el mensaje, sin recargar la página
+    // Abrir WhatsApp en nueva ventana con mensaje
     window.open("https://wa.me/14323419865?text=" + message, "_blank");
+}
+
+// Opcional: habilitar botón cuando todos los campos estén completos
+function checkForm(){
+    let platform = document.getElementById("platform").value;
+    let accountLink = document.getElementById("accountLink").value;
+    let followers = document.getElementById("followers").value;
+    document.getElementById("confirmButton").disabled = (platform === "" || accountLink === "" || followers === "");
+}
+
+// Llama checkForm cada vez que cambian los inputs
+document.getElementById("platform").addEventListener("change", checkForm);
+document.getElementById("accountLink").addEventListener("input", checkForm);
+document.getElementById("followers").addEventListener("input", checkForm);
+</script>
 }
 
 }

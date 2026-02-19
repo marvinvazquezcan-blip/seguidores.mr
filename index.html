@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>MR Growth - Crecimiento Real</title>
+
+<style>
+body{
+    margin:0;
+    font-family: 'Segoe UI', sans-serif;
+    background:linear-gradient(135deg,#b91c1c,#7f1d1d);
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    height:100vh;
+}
+
+.container{
+    background:white;
+    width:380px;
+    padding:30px;
+    border-radius:15px;
+    box-shadow:0 15px 40px rgba(0,0,0,0.3);
+}
+
+h1{
+    text-align:center;
+    color:#b91c1c;
+    margin-bottom:5px;
+}
+
+.subtitle{
+    text-align:center;
+    font-size:14px;
+    color:#555;
+    margin-bottom:20px;
+}
+
+label{
+    font-size:14px;
+    font-weight:bold;
+    color:#333;
+}
+
+select,input{
+    width:100%;
+    padding:12px;
+    margin:8px 0 15px 0;
+    border-radius:8px;
+    border:1px solid #ddd;
+    font-size:14px;
+}
+
+input:focus, select:focus{
+    outline:none;
+    border:1px solid #b91c1c;
+}
+
+.price-box{
+    background:#fee2e2;
+    padding:12px;
+    border-radius:8px;
+    text-align:center;
+    font-weight:bold;
+    color:#b91c1c;
+    margin-bottom:15px;
+}
+
+.cashapp{
+    background:#f3f4f6;
+    padding:12px;
+    border-radius:8px;
+    text-align:center;
+    margin-bottom:15px;
+    font-size:14px;
+}
+
+button{
+    width:100%;
+    padding:14px;
+    background:#b91c1c;
+    color:white;
+    border:none;
+    border-radius:8px;
+    font-weight:bold;
+    cursor:pointer;
+    font-size:15px;
+    transition:0.3s;
+}
+
+button:hover{
+    background:#991b1b;
+}
+
+.progress-container{
+    background:#eee;
+    border-radius:20px;
+    height:12px;
+    margin-top:20px;
+    overflow:hidden;
+}
+
+.progress-bar{
+    height:100%;
+    width:0%;
+    background:#b91c1c;
+    transition:0.4s;
+}
+</style>
+</head>
+<body>
+
+<div class="container">
+    <h1>MR Growth</h1>
+    <div class="subtitle">Crecimiento real con asesoría personalizada</div>
+
+    <label>Plataforma</label>
+    <select id="plataforma" onchange="actualizarProgreso()">
+        <option value="">Selecciona plataforma</option>
+        <option>Instagram</option>
+        <option>TikTok</option>
+        <option>Facebook</option>
+    </select>
+
+    <label>Link de tu cuenta</label>
+    <input type="text" id="link" placeholder="https://" oninput="actualizarProgreso()">
+
+    <label>Cantidad de seguidores</label>
+    <input type="number" id="seguidores" placeholder="Ej: 1000" 
+    oninput="calcularPrecio(); actualizarProgreso();">
+
+    <div class="price-box">
+        Total: $<span id="total">0.00</span>
+    </div>
+
+    <div class="cashapp">
+        Paga por Cash App:<br>
+        <strong>$seguidoresmr</strong>
+    </div>
+
+    <button onclick="enviarWhatsApp()">Confirmar Pago</button>
+
+    <div class="progress-container">
+        <div class="progress-bar" id="barra"></div>
+    </div>
+</div>
+
+<script>
+function calcularPrecio(){
+    let seguidores = document.getElementById("seguidores").value;
+    let precio = (seguidores / 1000) * 9;
+    document.getElementById("total").innerText = seguidores ? precio.toFixed(2) : "0.00";
+}
+
+function actualizarProgreso(){
+    let progreso = 0;
+
+    if(document.getElementById("plataforma").value !== ""){
+        progreso += 25;
+    }
+
+    if(document.getElementById("link").value !== ""){
+        progreso += 25;
+    }
+
+    if(document.getElementById("seguidores").value !== ""){
+        progreso += 50;
+    }
+
+    document.getElementById("barra").style.width = progreso + "%";
+}
+
+function enviarWhatsApp(){
+    let plataforma = document.getElementById("plataforma").value;
+    let link = document.getElementById("link").value;
+    let seguidores = document.getElementById("seguidores").value;
+    let total = document.getElementById("total").innerText;
+
+    if(plataforma === "" || link === "" || seguidores === ""){
+        alert("Por favor completa todos los campos.");
+        return;
+    }
+
+    let mensaje = "Nuevo Cliente MR Growth 🚀%0A" +
+                  "Plataforma: " + plataforma + "%0A" +
+                  "Cuenta: " + link + "%0A" +
+                  "Seguidores: " + seguidores + "%0A" +
+                  "Total Pagado: $" + total;
+
+    window.open("https://wa.me/14323419865?text=" + mensaje, "_blank");
+}
+</script>
+
+</body>
+</html>

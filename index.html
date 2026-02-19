@@ -59,23 +59,26 @@ input:focus, select:focus{
     color:#b91c1c;
     margin-bottom:15px;
 }
-button{
+.boton{
+    display:block;
     width:100%;
+    text-align:center;
     padding:14px;
+    margin-bottom:10px;
     background:#b91c1c;
     color:white;
-    border:none;
+    text-decoration:none;
     border-radius:8px;
     font-weight:bold;
-    cursor:pointer;
     font-size:15px;
     transition:0.3s;
 }
-button:hover{
+.boton:hover{
     background:#991b1b;
 }
-button:disabled{
+.boton.disabled{
     background:#ccc;
+    pointer-events:none;
     cursor:not-allowed;
 }
 .progress-container{
@@ -90,10 +93,6 @@ button:disabled{
     width:0%;
     background:#b91c1c;
     transition: width 0.5s ease-in-out;
-}
-.cashapp{
-    text-align:center;
-    margin-bottom:15px;
 }
 </style>
 </head>
@@ -121,15 +120,15 @@ button:disabled{
         Total: $<span id="total">0.00</span>
     </div>
 
-    <div class="cashapp">
-        <button id="botonCash" onclick="pagarCashApp()">
-            Pagar por Cash App
-        </button>
-    </div>
+    <!-- Enlace Cash App seguro -->
+    <a id="linkCashApp" class="boton disabled" target="_blank" rel="noopener noreferrer">
+        Pagar por Cash App
+    </a>
 
-    <button id="botonWhats" onclick="enviarWhatsApp()" disabled>
+    <!-- Enlace WhatsApp -->
+    <a id="linkWhatsApp" class="boton disabled" target="_blank">
         Confirmar Pago
-    </button>
+    </a>
 
     <div class="progress-container">
         <div class="progress-bar" id="barra"></div>
@@ -137,14 +136,14 @@ button:disabled{
 </div>
 
 <script>
-/* CALCULO DE PRECIO */
 function calcularPrecio(){
     let seguidores = parseInt(document.getElementById("seguidores").value) || 0;
     let precio = (seguidores / 1000) * 9;
     document.getElementById("total").innerText = seguidores ? precio.toFixed(2) : "0.00";
+    actualizarCashLink();
 }
 
-/* BARRA DE PROGRESO */
+/* Barra de progreso */
 function actualizarProgreso(){
     let progreso = 0;
     if(document.getElementById("plataforma").value !== "") progreso += 25;
@@ -153,51 +152,49 @@ function actualizarProgreso(){
     document.getElementById("barra").style.width = progreso + "%";
 }
 
-/* HABILITAR BOTON WHATSAPP */
+/* Habilitar botones y actualizar links */
 function checkForm(){
     let plataforma = document.getElementById("plataforma").value;
     let link = document.getElementById("link").value;
     let seguidores = document.getElementById("seguidores").value;
-    document.getElementById("botonWhats").disabled = (plataforma === "" || link === "" || seguidores === "");
-}
 
-/* PAGAR CASH APP */
-function pagarCashApp(){
-    let total = document.getElementById("total").innerText;
-    if(total == "0.00"){
-        alert("Primero ingresa la cantidad de seguidores.");
-        return;
+    let completo = (plataforma !== "" && link !== "" && seguidores !== "");
+
+    let cash = document.getElementById("linkCashApp");
+    let wa = document.getElementById("linkWhatsApp");
+
+    if(completo){
+        cash.classList.remove("disabled");
+        wa.classList.remove("disabled");
+        actualizarCashLink();
+        actualizarWhatsLink();
+    } else {
+        cash.classList.add("disabled");
+        cash.href = "#";
+        wa.classList.add("disabled");
+        wa.href = "#";
     }
-
-    let linkPago = "https://cash.app/$seguidoresmr/" + total + "?note=Marketing";
-
-    // Abrir Cash App en nueva pestaña de forma segura
-    let a = document.createElement("a");
-    a.href = linkPago;
-    a.target = "_blank";
-    a.rel = "noopener noreferrer";
-    document.body.appendChild(a);
-    a.click();
-    document.body.removeChild(a);
 }
 
-/* ENVIAR WHATSAPP */
-function enviarWhatsApp(){
+/* Actualiza link Cash App */
+function actualizarCashLink(){
+    let total = document.getElementById("total").innerText;
+    let cash = document.getElementById("linkCashApp");
+    if(cash.classList.contains("disabled")) return;
+    cash.href = `https://cash.app/$seguidoresmr/${encodeURIComponent(total)}?note=Marketing`;
+}
+
+/* Actualiza link WhatsApp */
+function actualizarWhatsLink(){
     let plataforma = document.getElementById("plataforma").value;
     let link = document.getElementById("link").value;
     let seguidores = document.getElementById("seguidores").value;
     let total = document.getElementById("total").innerText;
+    let wa = document.getElementById("linkWhatsApp");
 
-    if(plataforma === "" || link === "" || seguidores === ""){
-        alert("Por favor completa todos los campos.");
-        return;
-    }
-
-    let mensaje = encodeURIComponent(
+    wa.href = "https://wa.me/14323419865?text=" + encodeURIComponent(
         `Nuevo Cliente MR Growth 🚀\nPlataforma: ${plataforma}\nCuenta: ${link}\nSeguidores: ${seguidores}\nTotal Pagado: $${total}`
     );
-
-    window.open("https://wa.me/14323419865?text=" + mensaje, "_blank");
 }
 </script>
 

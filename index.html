@@ -5,7 +5,6 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>MR Growth - Crecimiento Real</title>
 <style>
-/* Reset y body */
 body{
     margin:0;
     font-family: 'Segoe UI', sans-serif;
@@ -16,7 +15,6 @@ body{
     min-height:100vh;
 }
 
-/* Contenedor */
 .container{
     background:white;
     width:90%;
@@ -26,7 +24,6 @@ body{
     box-shadow:0 15px 40px rgba(0,0,0,0.3);
 }
 
-/* Titulos */
 h1{
     text-align:center;
     color:#b91c1c;
@@ -40,7 +37,6 @@ h1{
     margin-bottom:20px;
 }
 
-/* Labels e Inputs */
 label{
     font-size:14px;
     font-weight:bold;
@@ -61,7 +57,6 @@ input:focus, select:focus{
     border:1px solid #b91c1c;
 }
 
-/* Precio */
 .price-box{
     background:#fee2e2;
     padding:12px;
@@ -72,7 +67,6 @@ input:focus, select:focus{
     margin-bottom:15px;
 }
 
-/* Botones */
 button{
     width:100%;
     padding:14px;
@@ -95,7 +89,6 @@ button:disabled{
     cursor:not-allowed;
 }
 
-/* Barra de progreso */
 .progress-container{
     background:#eee;
     border-radius:20px;
@@ -111,7 +104,6 @@ button:disabled{
     transition:0.4s;
 }
 
-/* Cash App */
 .cashapp{
     text-align:center;
     margin-bottom:15px;
@@ -142,10 +134,14 @@ button:disabled{
         Total: $<span id="total">0.00</span>
     </div>
 
+    <!-- Botón de Cash App -->
     <div class="cashapp">
-        <button id="botonCash" onclick="pagarCashApp()">Pagar por Cash App</button>
+        <button id="botonCash" onclick="pagarCashApp()">
+            Pagar por Cash App
+        </button>
     </div>
 
+    <!-- Botón de Confirmar Pago -->
     <button id="botonWhats" onclick="enviarWhatsApp()" disabled>
         Confirmar Pago
     </button>
@@ -166,11 +162,9 @@ function calcularPrecio(){
 /* Actualiza barra de progreso */
 function actualizarProgreso(){
     let progreso = 0;
-
     if(document.getElementById("plataforma").value !== "") progreso += 25;
     if(document.getElementById("link").value !== "") progreso += 25;
     if(document.getElementById("seguidores").value !== "") progreso += 50;
-
     document.getElementById("barra").style.width = progreso + "%";
 }
 
@@ -179,19 +173,18 @@ function checkForm(){
     let plataforma = document.getElementById("plataforma").value;
     let link = document.getElementById("link").value;
     let seguidores = document.getElementById("seguidores").value;
-
     document.getElementById("botonWhats").disabled = (plataforma === "" || link === "" || seguidores === "");
 }
 
 /* Abrir Cash App con monto y nota */
 function pagarCashApp(){
     let total = document.getElementById("total").innerText;
-
     if(total == "0.00"){
         alert("Primero ingresa la cantidad de seguidores.");
         return;
     }
 
+    // Abrir Cash App en nueva ventana
     let linkPago = "https://cash.app/$seguidoresmr/" + total + "?note=Marketing";
     window.open(linkPago, "_blank");
 }
@@ -214,6 +207,7 @@ function enviarWhatsApp(){
                   "Seguidores: " + seguidores + "%0A" +
                   "Total Pagado: $" + total;
 
+    // Abrir WhatsApp sin recargar página
     window.open("https://wa.me/14323419865?text=" + mensaje, "_blank");
 }
 </script>

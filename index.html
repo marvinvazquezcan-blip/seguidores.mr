@@ -7,14 +7,13 @@
 <style>
 body{
     margin:0;
-    font-family: 'Segoe UI', sans-serif;
+    font-family:'Segoe UI',sans-serif;
     background:linear-gradient(135deg,#b91c1c,#7f1d1d);
     display:flex;
     justify-content:center;
     align-items:center;
     min-height:100vh;
 }
-
 .container{
     background:white;
     width:90%;
@@ -23,26 +22,22 @@ body{
     border-radius:15px;
     box-shadow:0 15px 40px rgba(0,0,0,0.3);
 }
-
 h1{
     text-align:center;
     color:#b91c1c;
     margin-bottom:5px;
 }
-
 .subtitle{
     text-align:center;
     font-size:14px;
     color:#555;
     margin-bottom:20px;
 }
-
 label{
     font-size:14px;
     font-weight:bold;
     color:#333;
 }
-
 select,input{
     width:100%;
     padding:12px;
@@ -51,12 +46,10 @@ select,input{
     border:1px solid #ddd;
     font-size:14px;
 }
-
 input:focus, select:focus{
     outline:none;
     border:1px solid #b91c1c;
 }
-
 .price-box{
     background:#fee2e2;
     padding:12px;
@@ -66,7 +59,6 @@ input:focus, select:focus{
     color:#b91c1c;
     margin-bottom:15px;
 }
-
 button{
     width:100%;
     padding:14px;
@@ -79,16 +71,13 @@ button{
     font-size:15px;
     transition:0.3s;
 }
-
 button:hover{
     background:#991b1b;
 }
-
 button:disabled{
     background:#ccc;
     cursor:not-allowed;
 }
-
 .progress-container{
     background:#eee;
     border-radius:20px;
@@ -96,14 +85,12 @@ button:disabled{
     margin-top:20px;
     overflow:hidden;
 }
-
 .progress-bar{
     height:100%;
     width:0%;
     background:#b91c1c;
-    transition:0.4s;
+    transition: width 0.5s ease-in-out;
 }
-
 .cashapp{
     text-align:center;
     margin-bottom:15px;
@@ -134,14 +121,12 @@ button:disabled{
         Total: $<span id="total">0.00</span>
     </div>
 
-    <!-- Botón de Cash App -->
     <div class="cashapp">
         <button id="botonCash" onclick="pagarCashApp()">
             Pagar por Cash App
         </button>
     </div>
 
-    <!-- Botón de Confirmar Pago -->
     <button id="botonWhats" onclick="enviarWhatsApp()" disabled>
         Confirmar Pago
     </button>
@@ -152,14 +137,14 @@ button:disabled{
 </div>
 
 <script>
-/* Calcula precio */
+/* CALCULO DE PRECIO */
 function calcularPrecio(){
-    let seguidores = document.getElementById("seguidores").value;
+    let seguidores = parseInt(document.getElementById("seguidores").value) || 0;
     let precio = (seguidores / 1000) * 9;
     document.getElementById("total").innerText = seguidores ? precio.toFixed(2) : "0.00";
 }
 
-/* Actualiza barra de progreso */
+/* BARRA DE PROGRESO */
 function actualizarProgreso(){
     let progreso = 0;
     if(document.getElementById("plataforma").value !== "") progreso += 25;
@@ -168,7 +153,7 @@ function actualizarProgreso(){
     document.getElementById("barra").style.width = progreso + "%";
 }
 
-/* Habilita botón Confirmar solo si todo está completo */
+/* HABILITAR BOTON WHATSAPP */
 function checkForm(){
     let plataforma = document.getElementById("plataforma").value;
     let link = document.getElementById("link").value;
@@ -176,7 +161,7 @@ function checkForm(){
     document.getElementById("botonWhats").disabled = (plataforma === "" || link === "" || seguidores === "");
 }
 
-/* Abrir Cash App con monto y nota */
+/* PAGAR CASH APP */
 function pagarCashApp(){
     let total = document.getElementById("total").innerText;
     if(total == "0.00"){
@@ -184,12 +169,19 @@ function pagarCashApp(){
         return;
     }
 
-    // Abrir Cash App en nueva ventana
     let linkPago = "https://cash.app/$seguidoresmr/" + total + "?note=Marketing";
-    window.open(linkPago, "_blank");
+
+    // Abrir Cash App en nueva pestaña de forma segura
+    let a = document.createElement("a");
+    a.href = linkPago;
+    a.target = "_blank";
+    a.rel = "noopener noreferrer";
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
 }
 
-/* Enviar WhatsApp */
+/* ENVIAR WHATSAPP */
 function enviarWhatsApp(){
     let plataforma = document.getElementById("plataforma").value;
     let link = document.getElementById("link").value;
@@ -201,13 +193,10 @@ function enviarWhatsApp(){
         return;
     }
 
-    let mensaje = "Nuevo Cliente MR Growth 🚀%0A" +
-                  "Plataforma: " + plataforma + "%0A" +
-                  "Cuenta: " + link + "%0A" +
-                  "Seguidores: " + seguidores + "%0A" +
-                  "Total Pagado: $" + total;
+    let mensaje = encodeURIComponent(
+        `Nuevo Cliente MR Growth 🚀\nPlataforma: ${plataforma}\nCuenta: ${link}\nSeguidores: ${seguidores}\nTotal Pagado: $${total}`
+    );
 
-    // Abrir WhatsApp sin recargar página
     window.open("https://wa.me/14323419865?text=" + mensaje, "_blank");
 }
 </script>

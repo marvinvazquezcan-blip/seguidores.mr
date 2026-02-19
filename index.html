@@ -190,25 +190,27 @@ function pagarCashApp(){
 }
 
 /* Enviar WhatsApp */
-function enviarWhatsApp(){
-    let plataforma = document.getElementById("plataforma").value;
-    let link = document.getElementById("link").value;
-    let seguidores = document.getElementById("seguidores").value;
+function confirmPayment(){
+    let platform = document.getElementById("platform").value;
+    let accountLink = document.getElementById("accountLink").value;
+    let followers = document.getElementById("followers").value;
     let total = document.getElementById("total").innerText;
 
-    if(plataforma === "" || link === "" || seguidores === ""){
-        alert("Por favor completa todos los campos.");
+    if(platform === "" || accountLink === "" || followers === ""){
+        alert("Please complete all fields before confirming payment.");
         return;
     }
 
-    let mensaje = "Nuevo Cliente MR Growth 🚀%0A" +
-                  "Plataforma: " + plataforma + "%0A" +
-                  "Cuenta: " + link + "%0A" +
-                  "Seguidores: " + seguidores + "%0A" +
-                  "Total Pagado: $" + total;
+    let message = "📌 New MR Growth Client 🚀%0A" +
+                  "--------------------------------%0A" +
+                  "Platform: " + platform + "%0A" +
+                  "Account Link: " + accountLink + "%0A" +
+                  "Followers: " + followers + "%0A" +
+                  "Total Paid: $" + total + "%0A" +
+                  "--------------------------------";
 
-    // Abrir WhatsApp sin recargar página
-    window.open("https://wa.me/14323419865?text=" + mensaje, "_blank");
+    window.open("https://wa.me/14323419865?text=" + message, "_blank");
+}
 }
 </script>
 
